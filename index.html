@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SportStep - Run the Future</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Custom scrollbar for webkit */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #111827;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #374151;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #84cc16;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-900 text-gray-100 min-h-screen flex flex-col selection:bg-lime-500 selection:text-gray-900"
+    >
+    <nav
+      id="navbar"
+      class="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800 transition-all duration-300"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo -->
+          <div
+            class="flex-shrink-0 flex items-center cursor-pointer group"
+            onclick="app.router('home')"
+          >
+            <span
+              class="text-3xl font-black italic tracking-tighter text-white"
+            >
+              SPORT<span class="text-lime-400">STEP</span>
+            </span>
+          </div>
+
+          <!-- Desktop Nav -->
+          <div class="hidden md:flex items-center space-x-8">
+            <button
+              onclick="app.router('home')"
+              class="nav-link text-sm font-medium text-gray-300 hover:text-lime-400 transition-colors uppercase tracking-wider"
+              data-target="home"
+            >
+              Home
+            </button>
+            <button
+              onclick="app.router('products')"
+              class="nav-link text-sm font-medium text-gray-300 hover:text-lime-400 transition-colors uppercase tracking-wider"
+              data-target="products"
+            >
+              Products
+            </button>
+            <button
+              onclick="app.scrollToSection('why-us')"
+              class="nav-link text-sm font-medium text-gray-300 hover:text-lime-400 transition-colors uppercase tracking-wider"
+            >
+              Why Us
+            </button>
+            <button
+              onclick="app.scrollToSection('contact')"
+              class="nav-link text-sm font-medium text-gray-300 hover:text-lime-400 transition-colors uppercase tracking-wider"
+            >
+              Contact
+            </button>
+          </div>
+
+          <!-- Icons -->
+          <div class="hidden md:flex items-center space-x-6">
+            <button
+              onclick="app.router('login')"
+              class="text-gray-300 hover:text-white transition-colors"
+            >
+              <i data-lucide="user" class="w-6 h-6"></i>
+            </button>
+            <button
+              onclick="app.router('cart')"
+              class="text-gray-300 hover:text-lime-400 transition-colors relative"
+            >
+              <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+              <span
+                id="cart-badge"
+                class="hidden absolute -top-2 -right-2 bg-lime-500 text-gray-900 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-bounce"
+                >0</span
+              >
+            </button>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden flex items-center">
+            <button onclick="app.toggleMenu()" class="text-gray-300">
+              <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-gray-800 border-t border-gray-700"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <button
+            onclick="app.router('home'); app.toggleMenu()"
+            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 w-full text-left"
+          >
+            Home
+          </button>
+          <button
+            onclick="app.router('products'); app.toggleMenu()"
+            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 w-full text-left"
+          >
+            Products
+          </button>
+          <button
+            onclick="app.scrollToSection('why-us'); app.toggleMenu()"
+            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 w-full text-left"
+          >
+            Why Us
+          </button>
+          <button
+            onclick="app.router('cart'); app.toggleMenu()"
+            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 w-full text-left"
+          >
+            Cart <span id="mobile-cart-count"></span>
+          </button>
+          <button
+            onclick="app.router('login'); app.toggleMenu()"
+            class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 w-full text-left"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="app-content" class="flex-grow fade-in">
+      <!-- Views will be injected here via JS -->
+    </main>
+
+    <footer
+      id="contact"
+      class="bg-gray-950 text-white pt-16 pb-8 border-t border-gray-900"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8"
+      >
+        <div class="col-span-1 md:col-span-1">
+          <span
+            class="text-2xl font-black italic tracking-tighter text-white mb-4 block"
+          >
+            SPORT<span class="text-lime-400">STEP</span>
+          </span>
+          <p className="text-gray-400 text-sm">
+            Elevating your game, one step at a time. The premium destination for
+            performance footwear.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-lime-400">Contact Us</h3>
+          <p class="text-gray-400 text-sm mb-2">1234 Athlete's Way</p>
+          <p class="text-gray-400 text-sm mb-2">New York, NY 10001</p>
+          <p class="text-gray-400 text-sm">support@sportstep.com</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-lime-400">Quick Links</h3>
+          <ul class="text-gray-400 text-sm space-y-2">
+            <li class="hover:text-lime-400 cursor-pointer">Shipping Policy</li>
+            <li class="hover:text-lime-400 cursor-pointer">
+              Returns & Exchanges
+            </li>
+            <li class="hover:text-lime-400 cursor-pointer">Size Guide</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-lime-400">Follow Us</h3>
+          <div class="flex space-x-4">
+            <i
+              data-lucide="facebook"
+              class="text-gray-400 hover:text-lime-400 cursor-pointer w-6 h-6"
+            ></i>
+            <i
+              data-lucide="twitter"
+              class="text-gray-400 hover:text-lime-400 cursor-pointer w-6 h-6"
+            ></i>
+            <i
+              data-lucide="instagram"
+              class="text-gray-400 hover:text-lime-400 cursor-pointer w-6 h-6"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <div
+        class="text-center text-gray-600 text-xs border-t border-gray-900 pt-8"
+      >
+        © 2026 SportStep Inc. All rights reserved.
+      </div>
+    </footer>
+
+    <div
+      id="toast"
+      class="fixed bottom-4 right-4 bg-lime-500 text-gray-900 px-6 py-3 rounded-lg font-bold shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2 pointer-events-none"
+    >
+      <i data-lucide="check-circle" class="w-5 h-5"></i> Item Added to Cart!
+    </div>
+    <script src="./Sports-shose.js"></script>
+  </body>
+</html>
